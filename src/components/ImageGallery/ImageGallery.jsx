@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import fetchImages from 'components/Api/Api';
+import Loader from 'components/Loader/Loader';
+import Button from 'components/Button/Button';
 
 export default class ImageGallery extends Component {
   state = {
@@ -39,7 +41,7 @@ export default class ImageGallery extends Component {
     }
 
     if (status === 'pending') {
-      return <div>Loading...</div>;
+      return <Loader loading={true} />;
     }
 
     if (status === 'rejected') {
@@ -49,13 +51,16 @@ export default class ImageGallery extends Component {
     if (status === 'resolved') {
       return (
         <div>
-          {images.map(img => (
-            <ImageGalleryItem
-              key={img.id}
-              item={img}
-              onImageClick={this.onClick}
-            />
-          ))}
+          <ul className="ImageGallery">
+            {images.map(img => (
+              <ImageGalleryItem
+                key={img.id}
+                item={img}
+                onImageClick={this.onClick}
+              />
+            ))}
+          </ul>
+          <Button onClick={this.handleLoadMore}/>           
         </div>
       );
     }

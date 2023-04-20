@@ -7,21 +7,21 @@ const initialValues = {
 
 const Searchbar = ({ onSubmit }) => {
   return (
-    <header class="searchbar">
+    <header className="searchbar">
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => onSubmit(values, actions)}
       >
         <Form>
-          <button type="submit" class="button">
-            <span class="button-label">Search</span>
+          <button type="submit">
+            <span>Search</span>
           </button>
 
           <Field
             name="search"
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
           />
         </Form>
