@@ -4,6 +4,7 @@ import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
+import { AppContainer } from './App.styled';
 
 const API_KEY = '34168491-a08a19ec58377d1b70d25ff83';
 const PER_PAGE = 12;
@@ -65,7 +66,7 @@ render() {
 const { images, error, status } = this.state;
 
 return (
-  <div>
+  <AppContainer>
     <Searchbar onSubmit={this.onFormSubmit} />
     {status === 'idle' && <div>Enter a search query</div>}
     {status === 'pending' && <Loader loading={true} />}
@@ -75,7 +76,7 @@ return (
         <Button onClick={this.handleLoadMore} />
       </ImageGallery>
     )}
-  </div>
+  </AppContainer>
 );
     }
   }

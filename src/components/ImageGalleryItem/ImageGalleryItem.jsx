@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
+import { ImageGalleryItemStyle, ImgStyle } from './ImageGalleryItem.styled';
 
 export default class ImageGalleryItem extends PureComponent {
   handleClick = () => {
@@ -9,14 +10,14 @@ export default class ImageGalleryItem extends PureComponent {
   render() {
     const { webformatURL, tags } = this.props.item;
     return (
-      <li>
-        <img
+      <ImageGalleryItemStyle>
+        <ImgStyle
           src={webformatURL}
           alt={tags}
           onClick={this.handleClick}
           className="ImageGalleryItem-image"
         />
-      </li>
+      </ImageGalleryItemStyle>
     );
   }
 }

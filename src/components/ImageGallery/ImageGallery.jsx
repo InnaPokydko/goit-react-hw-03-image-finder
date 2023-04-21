@@ -1,16 +1,16 @@
 import React from 'react';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
+import { ImageGalleryStyle } from './ImageGallery.styled';
 
 const ImageGallery = ({ images, children }) => {
   return (
     <div>
-      <ul className="ImageGallery">
-        {images.map((img) => (
+      <ImageGalleryStyle>
+        {images.map(img => (
           <ImageGalleryItem key={img.id} item={img} />
         ))}
-      </ul>
+      </ImageGalleryStyle>
       {children}
-      <Modal />
     </div>
   );
 };
@@ -83,7 +83,7 @@ export default ImageGallery;
 //               />
 //             ))}
 //           </ul>
-//           <Button onClick={this.handleLoadMore}/>           
+//           <Button onClick={this.handleLoadMore}/>
 //         </div>
 //       );
 //     }
