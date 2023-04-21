@@ -1,19 +1,22 @@
+import React from 'react';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
+import Modal from 'components/Modal/Modal';
 
-const ImageGallery = ({ images, children }) => {
+const ImageGallery = ({ images, onImageClick, children }) => {
   return (
-  <div>
-  <ul className="ImageGallery">
-  {images.map((img) => (
-  <ImageGalleryItem key={img.id} item={img} />
-  ))}
-  </ul>
-  {children}
-  </div>
+    <div>
+      <ul className="ImageGallery">
+        {images.map((img) => (
+          <ImageGalleryItem key={img.id} item={img} onImageClick={onImageClick} />
+        ))}
+      </ul>
+      {children}
+      <Modal />
+    </div>
   );
-  };
-  
-  export default ImageGallery;
+};
+
+export default ImageGallery;
 
 // const API_KEY = '34168491-a08a19ec58377d1b70d25ff83';
 // const PER_PAGE = 12;
