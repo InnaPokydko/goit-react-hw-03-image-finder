@@ -1,13 +1,12 @@
 import React from 'react';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
-import Modal from 'components/Modal/Modal';
 
-const ImageGallery = ({ images, onImageClick, children }) => {
+const ImageGallery = ({ images, children }) => {
   return (
     <div>
       <ul className="ImageGallery">
         {images.map((img) => (
-          <ImageGalleryItem key={img.id} item={img} onImageClick={onImageClick} />
+          <ImageGalleryItem key={img.id} item={img} />
         ))}
       </ul>
       {children}

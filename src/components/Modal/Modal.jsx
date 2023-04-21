@@ -1,50 +1,41 @@
 import { Component } from 'react';
+import { createPortal } from 'react-dom';
 
 class Modal extends Component {
-  state = {
-    isOpen: false,
-    imageUrl: '',
-  };
-
-  openModal = (imageUrl) => {
-    this.setState({
-      isOpen: true,
-      imageUrl,
-    });
+  componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown);
-  };
+  }
 
-  closeModal = () => {
-    this.setState({
-      isOpen: false,
-      imageUrl: '',
-    });
+  componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown);
-  };
+  }
 
   handleKeyDown = (e) => {
     if (e.code === 'Escape') {
-      this.closeModal();
+      this.props.onCloseModal();
     }
   };
 
   handleBackdropClick = (e) => {
     if (e.currentTarget === e.target) {
-      this.closeModal();
+      this.props.onCloseModal();
     }
   };
 
   render() {
-    const { isOpen, imageUrl } = this.state;
+    const { imageUrl } = this.props;
 
-    return (
-      isOpen && (
-        <div className="Overlay" onClick={this.handleBackdropClick}>
-          <div className="Modal">
-            <img src={imageUrl} alt="" />
-          </div>
+
+    if (!isOpen) {
+      return null;
+    }
+
+    return ReactDOM.createPortal(
+      <div className="Overlay" onClick={this.handleBackdropClick}>
+        <div className="Modal">
+          <img src={imageUrl} alt="" />
         </div>
-      )
+      </div>     
     );
   }
 }
