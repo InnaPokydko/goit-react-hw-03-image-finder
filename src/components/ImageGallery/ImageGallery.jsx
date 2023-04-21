@@ -1,68 +1,89 @@
-import { Component } from 'react';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
-import fetchImages from 'components/Api/Api';
-import Loader from 'components/Loader/Loader';
-import Button from 'components/Button/Button';
 
-export default class ImageGallery extends Component {
-  state = {
-    images: [],
-    error: null,
-    status: 'idle',
-    page: 1,
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.query !== this.props.query) { // перевірка на оновлення запиту
-      this.setState({ status: 'pending' });
-      fetchImages(this.props.query, this.state.page) // викликаємо функцію для запиту
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-          return Promise.reject(new Error(`No images`));
-        })
-        .then(data => {
-          const images = data.hits; // отримуємо масив зображень з відповіді
-          this.setState({ images, status: 'resolved' });
-        })
-        .catch(error => this.setState({ error, status: 'rejected' }));
-    }
-  }
-  handleLoadMore = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 })); // збільшуємо значення сторінки при завантаженні наступних зображень
+const ImageGallery = ({ images, children }) => {
+  return (
+  <div>
+  <ul className="ImageGallery">
+  {images.map((img) => (
+  <ImageGalleryItem key={img.id} item={img} />
+  ))}
+  </ul>
+  {children}
+  </div>
+  );
   };
   
-  render() {
-    const { images, error, status } = this.state;
+  export default ImageGallery;
 
-    if (status === 'idle') {
-      return <div>Enter a search query</div>;
-    }
+// const API_KEY = '34168491-a08a19ec58377d1b70d25ff83';
+// const PER_PAGE = 12;
 
-    if (status === 'pending') {
-      return <Loader loading={true} />;
-    }
+// export default class ImageGallery extends Component {
+// state = {
+// images: [],
+// error: null,
+// status: 'idle',
+// page: 1,
+// };
 
-    if (status === 'rejected') {
-      return <h2>{error.message}</h2>;
-    }
+// componentDidUpdate(prevProps, prevState) {
+// if (prevProps.query !== this.props.query) { // перевірка на оновлення запиту
+// this.setState({ status: 'pending' });
+// this.fetchImages(this.props.query, 1); // викликаємо функцію для запиту з першої сторінки
+// }
+// if (prevState.page !== this.state.page) { // перевірка на зміну сторінки
+// this.fetchImages(this.props.query, this.state.page); // викликаємо функцію для запиту зі сторінки, що змінилась
+// }
+// }
 
-    if (status === 'resolved') {
-      return (
-        <div>
-          <ul className="ImageGallery">
-            {images.map(img => (
-              <ImageGalleryItem
-                key={img.id}
-                item={img}
-                onImageClick={this.onClick}
-              />
-            ))}
-          </ul>
-          <Button onClick={this.handleLoadMore}/>           
-        </div>
-      );
-    }
-  }
-}
+// fetchImages = (query, page) => {
+// axios
+// .get(`https://pixabay.com/api/?key=${API_KEY}&q=${query}&page=${page}&per_page=${PER_PAGE}`)
+// .then((response) => {
+// this.setState((prevState) => ({
+// images: [...prevState.images, ...response.data.hits], // додаємо нові дані до існуючих
+// status: 'resolved', // змінюємо статус на resolved
+// }));
+// })
+// .catch((error) => {
+// console.log(error);
+// this.setState({ error, status: 'rejected' }); // змінюємо статус на rejected в разі помилки
+// });
+// };
+
+// handleLoadMore = () => {
+// this.setState((prevState) => ({ page: prevState.page + 1 })); // збільшуємо значення сторінки при завантаженні наступних зображень
+// };
+//   render() {
+//     const { images, error, status } = this.state;
+
+//     if (status === 'idle') {
+//       return <div>Enter a search query</div>;
+//     }
+
+//     if (status === 'pending') {
+//       return <Loader loading={true} />;
+//     }
+
+//     if (status === 'rejected') {
+//       return <h2>{error.message}</h2>;
+//     }
+
+//     if (status === 'resolved') {
+//       return (
+//         <div>
+//           <ul className="ImageGallery">
+//             {images.map(img => (
+//               <ImageGalleryItem
+//                 key={img.id}
+//                 item={img}
+//                 onImageClick={this.onClick}
+//               />
+//             ))}
+//           </ul>
+//           <Button onClick={this.handleLoadMore}/>           
+//         </div>
+//       );
+//     }
+//   }
+// }
