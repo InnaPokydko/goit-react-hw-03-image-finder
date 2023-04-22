@@ -3,7 +3,12 @@ import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import { ImageGalleryStyle } from './ImageGallery.styled';
 
 class ImageGallery extends Component {
+  state = {
+    largeImageURL: '',
+  };
+
   handleImageClick = (largeImageURL) => {
+    this.setState({largeImageURL: {largeImageURL}})
     console.log('Large image clicked: ', largeImageURL);
   };
   render() {

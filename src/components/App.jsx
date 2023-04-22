@@ -7,6 +7,7 @@ import Loader from './Loader/Loader';
 import Button from './Button/Button';
 import Modal from './Modal/Modal';
 import { AppContainer, IdleMessage } from './App.styled';
+import 'react-toastify/dist/ReactToastify.css';
 
 const API_KEY = '34168491-a08a19ec58377d1b70d25ff83';
 const PER_PAGE = 12;
@@ -19,16 +20,16 @@ class App extends Component {
     query: '',
     page: 1,
     isModalOpen: false,
-    selectedImage: '',
+    largeImageURL: '',
   };
 
-  onFormSubmit = (input) => {
-    if (input === '') {
-      toast.error('You entered an invalid value');
+  onFormSubmit = input => {
+    if (input.trim() === '') {
+      toast.error("Type something!");
       return;
     }
     this.setState({
-      query: input,
+      query: input.toLowerCase(),
       page: 1,
       images: [],
     });
@@ -41,13 +42,13 @@ class App extends Component {
         .get(
           `https://pixabay.com/api/?key=${API_KEY}&q=${this.state.query}&page=1&per_page=${PER_PAGE}`
         )
-        .then((response) => {
+        .then(response => {
           this.setState({
             images: response.data.hits,
             status: 'resolved',
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
           this.setState({ error, status: 'rejected' });
         });
@@ -57,13 +58,13 @@ class App extends Component {
         .get(
           `https://pixabay.com/api/?key=${API_KEY}&q=${this.state.query}&page=${this.state.page}&per_page=${PER_PAGE}`
         )
-        .then((response) => {
-          this.setState((prevState) => ({
+        .then(response => {
+          this.setState(prevState => ({
             images: [...prevState.images, ...response.data.hits],
             status: 'resolved',
           }));
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
           this.setState({ error, status: 'rejected' });
         });
@@ -71,45 +72,47 @@ class App extends Component {
   }
 
   handleLoadMore = () => {
-    this.setState((prevState) => ({ page: prevState.page + 1 }));
+    this.setState(prevState => ({ page: prevState.page + 1 }));
   };
-  
-  handleImageClick = (imageUrl) => {
+
+  handleImageClick = imageUrl => {
     this.setState({
       isModalOpen: true,
-      selectedImage: imageUrl,
+      largeImageURL: imageUrl,
     });
   };
 
   handleCloseModal = () => {
     this.setState({
       isModalOpen: false,
-      selectedImage: '',
+      largeImageURL: '',
     });
   };
 
   render() {
-    const { images, error, status, isModalOpen, selectedImage } = this.state;
+    const { images, error, status, isModalOpen, largeImageURL } = this.state;
 
-      return (
+    return (
       <AppContainer>
         <Searchbar onSubmit={this.onFormSubmit} />
         {status === 'idle' && <IdleMessage>Enter a search query</IdleMessage>}
         {status === 'pending' && <Loader loading={true} />}
         {status === 'rejected' && <h2>{error.message}</h2>}
-        {status === 'resolved' && (
-          <>
-            <ImageGallery images={images} onImageClick={this.handleImageClick}>
-              <Button onClick={this.handleLoadMore} />
-            </ImageGallery>
-            <ToastContainer />
+        {status === 'resolved'  && images.length > 0 && (
+          <div>
+            <ImageGallery
+              images={images}
+              onImageClick={this.handleImageClick}
+            />
+            <Button onClick={this.handleLoadMore} />
+            <ToastContainer/>
             {isModalOpen && (
               <Modal
-                imageUrl={selectedImage}
+                imageUrl={largeImageURL}
                 onCloseModal={this.handleCloseModal}
               />
             )}
-          </>
+          </div>
         )}
       </AppContainer>
     );

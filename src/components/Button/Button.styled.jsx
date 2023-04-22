@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export const LoadMoreBtn = styled.button`
+margin: 20px;
 padding: 8px 16px;
   border-radius: 2px;
   background-color: #2b80b3;
@@ -23,3 +24,7 @@ padding: 8px 16px;
   &:hover {
     background-image: linear-gradient(to right, #314755 0%, #26a0da 51%, #314755 100%);
   }`
+
+  export const BtnContainer = styled.div`
+  display: flex;
+  justify-content: center;`
