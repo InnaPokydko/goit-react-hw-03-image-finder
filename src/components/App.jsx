@@ -6,7 +6,7 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
 import Modal from './Modal/Modal';
-import { AppContainer } from './App.styled';
+import { AppContainer, IdleMessage } from './App.styled';
 
 const API_KEY = '34168491-a08a19ec58377d1b70d25ff83';
 const PER_PAGE = 12;
@@ -22,7 +22,7 @@ class App extends Component {
     selectedImage: '',
   };
 
-  onFormSubmit = input => {
+  onFormSubmit = (input) => {
     if (input === '') {
       toast.error('You entered an invalid value');
       return;
@@ -41,13 +41,13 @@ class App extends Component {
         .get(
           `https://pixabay.com/api/?key=${API_KEY}&q=${this.state.query}&page=1&per_page=${PER_PAGE}`
         )
-        .then(response => {
+        .then((response) => {
           this.setState({
             images: response.data.hits,
             status: 'resolved',
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.setState({ error, status: 'rejected' });
         });
@@ -57,13 +57,13 @@ class App extends Component {
         .get(
           `https://pixabay.com/api/?key=${API_KEY}&q=${this.state.query}&page=${this.state.page}&per_page=${PER_PAGE}`
         )
-        .then(response => {
-          this.setState(prevState => ({
+        .then((response) => {
+          this.setState((prevState) => ({
             images: [...prevState.images, ...response.data.hits],
             status: 'resolved',
           }));
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.setState({ error, status: 'rejected' });
         });
@@ -71,10 +71,10 @@ class App extends Component {
   }
 
   handleLoadMore = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+    this.setState((prevState) => ({ page: prevState.page + 1 }));
   };
-
-  handleImageClick = imageUrl => {
+  
+  handleImageClick = (imageUrl) => {
     this.setState({
       isModalOpen: true,
       selectedImage: imageUrl,
@@ -91,10 +91,10 @@ class App extends Component {
   render() {
     const { images, error, status, isModalOpen, selectedImage } = this.state;
 
-    return (
+      return (
       <AppContainer>
         <Searchbar onSubmit={this.onFormSubmit} />
-        {status === 'idle' && <div>Enter a search query</div>}
+        {status === 'idle' && <IdleMessage>Enter a search query</IdleMessage>}
         {status === 'pending' && <Loader loading={true} />}
         {status === 'rejected' && <h2>{error.message}</h2>}
         {status === 'resolved' && (

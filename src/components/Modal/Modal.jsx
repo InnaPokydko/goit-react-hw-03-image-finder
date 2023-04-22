@@ -1,28 +1,29 @@
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
+import { Overlay,  ModalImg } from './Modal.styled';
 
 const modalRoot = document.querySelector('#modal-root');
 
-const Modal = ({ closeModal, largeImage }) => {
+const Modal = ({ onCloseModal, largeImage }) => {
   const handleKeyDown = (e) => {
     if (e.code === 'Escape') {
-      closeModal();
+      onCloseModal();
     }
   };
 
   const handleBackdropClick = (e) => {
     if (e.currentTarget === e.target) {
-      closeModal();
+      onCloseModal();
     }
   };
 
   return createPortal(
     <>
-      <div className="Overlay" onClick={handleBackdropClick} onKeyDown={handleKeyDown}>
-        <div className="Modal">
+      <Overlay onClick={handleBackdropClick} onKeyDown={handleKeyDown}>
+        <ModalImg>
           <img src={largeImage} alt="" />
-        </div>
-      </div>
+        </ModalImg>
+      </Overlay>
     </>,
     modalRoot
   );
