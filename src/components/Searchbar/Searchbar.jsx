@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
+import { BsSearch } from 'react-icons/bs';
 import {
   SearchbarBox,
   FormSearch,
@@ -23,6 +24,9 @@ const Searchbar = ({ onSubmit }) => {
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         <FormSearch>
           <SearchBtn type="submit">
+            <BsSearch
+              style={{ width: '16px', height: '16px' }}
+            />
             <SearchBtnLabel>Search</SearchBtnLabel>
           </SearchBtn>
 
