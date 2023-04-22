@@ -2,9 +2,11 @@ import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 import { ImageGalleryItemStyle, ImgStyle } from './ImageGalleryItem.styled';
 
-export default class ImageGalleryItem extends PureComponent {
+class ImageGalleryItem extends PureComponent {
   handleClick = () => {
-    this.props.onImageClick(this.props.item.largeImageURL);
+    if (this.props.onImageClick) {
+      this.props.onImageClick(this.props.item.largeImageURL);
+    }
   };
 
   render() {
@@ -21,6 +23,8 @@ export default class ImageGalleryItem extends PureComponent {
     );
   }
 }
+
+export default ImageGalleryItem;
 
 ImageGalleryItem.propTypes = {
   item: PropTypes.shape({

@@ -15,7 +15,7 @@ export const SearchbarBox = styled.div`
   padding-top: 12px;
   padding-bottom: 12px;
   color: #fff;
-  background-image: linear-gradient(to top, #7028e4 0%, #e5b2ca 100%);
+  background-image: linear-gradient(15deg, #13547a 0%, #26a0da 100%);
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 `;

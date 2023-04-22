@@ -4,84 +4,110 @@ import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
+import Modal from './Modal/Modal';
 import { AppContainer } from './App.styled';
 
 const API_KEY = '34168491-a08a19ec58377d1b70d25ff83';
 const PER_PAGE = 12;
 
 class App extends Component {
-state = {
-images: [],
-error: null,
-status: 'idle',
-query: '',
-page: 1,
-};
+  state = {
+    images: [],
+    error: null,
+    status: 'idle',
+    query: '',
+    page: 1,
+    isModalOpen: false,
+    selectedImage: '',
+  };
 
-onFormSubmit = (input) => {
-this.setState({
-query: input,
-page: 1,
-images: [],
-});
-};
+  onFormSubmit = (input) => {
+    this.setState({
+      query: input,
+      page: 1,
+      images: [],
+    });
+  };
 
-componentDidUpdate(prevProps, prevState) {
-if (prevState.query !== this.state.query) {
-this.setState({ status: 'pending' });
-axios
-.get(`https://pixabay.com/api/?key=${API_KEY}&q=${this.state.query}&page=1&per_page=${PER_PAGE}`)
-.then((response) => {
-this.setState({
-images: response.data.hits,
-status: 'resolved',
-});
-})
-.catch((error) => {
-console.log(error);
-this.setState({ error, status: 'rejected' });
-});
-}
-if (prevState.page !== this.state.page) {
-axios
-.get(`https://pixabay.com/api/?key=${API_KEY}&q=${this.state.query}&page=${this.state.page}&per_page=${PER_PAGE}`)
-.then((response) => {
-this.setState((prevState) => ({
-images: [...prevState.images, ...response.data.hits],
-status: 'resolved',
-}));
-})
-.catch((error) => {
-console.log(error);
-this.setState({ error, status: 'rejected' });
-});
-}
-}
-
-handleLoadMore = () => {
-this.setState((prevState) => ({ page: prevState.page + 1 }));
-};
-
-render() {
-const { images, error, status } = this.state;
-
-return (
-  <AppContainer>
-    <Searchbar onSubmit={this.onFormSubmit} />
-    {status === 'idle' && <div>Enter a search query</div>}
-    {status === 'pending' && <Loader loading={true} />}
-    {status === 'rejected' && <h2>{error.message}</h2>}
-    {status === 'resolved' && (
-      <ImageGallery images={images}>
-        <Button onClick={this.handleLoadMore} />
-      </ImageGallery>
-    )}
-  </AppContainer>
-);
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.query !== this.state.query) {
+      this.setState({ status: 'pending' });
+      axios
+        .get(
+          `https://pixabay.com/api/?key=${API_KEY}&q=${this.state.query}&page=1&per_page=${PER_PAGE}`
+        )
+        .then((response) => {
+          this.setState({
+            images: response.data.hits,
+            status: 'resolved',
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({ error, status: 'rejected' });
+        });
+    }
+    if (prevState.page !== this.state.page) {
+      axios
+        .get(
+          `https://pixabay.com/api/?key=${API_KEY}&q=${this.state.query}&page=${this.state.page}&per_page=${PER_PAGE}`
+        )
+        .then((response) => {
+          this.setState((prevState) => ({
+            images: [...prevState.images, ...response.data.hits],
+            status: 'resolved',
+          }));
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({ error, status: 'rejected' });
+        });
     }
   }
 
-  export default App;
+  handleLoadMore = () => {
+    this.setState((prevState) => ({ page: prevState.page + 1 }));
+  };
+
+  handleImageClick = (imageUrl) => {
+    this.setState({
+      isModalOpen: true,
+      selectedImage: imageUrl,
+    });
+  };
+
+  handleCloseModal = () => {
+    this.setState({
+      isModalOpen: false,
+      selectedImage: '',
+    });
+  };
+
+  render() {
+    const { images, error, status, isModalOpen, selectedImage } = this.state;
+
+    return (
+      <AppContainer>
+        <Searchbar onSubmit={this.onFormSubmit} />
+        {status === 'idle' && <div>Enter a search query</div>}
+        {status === 'pending' && <Loader loading={true} />}
+        {status === 'rejected' && <h2>{error.message}</h2>}
+        {status === 'resolved' && (
+          <>
+            <ImageGallery images={images} onImageClick={this.handleImageClick}>
+              <Button onClick={this.handleLoadMore} />
+            </ImageGallery>
+            {isModalOpen && (
+              <Modal imageUrl={selectedImage} onCloseModal={this.handleCloseModal} />
+            )}
+          </>
+        )}
+      </AppContainer>
+    );
+  }
+}
+
+export default App;
 
 
 // const API_KEY = '34168491-a08a19ec58377d1b70d25ff83';

@@ -1,21 +1,27 @@
-import React from 'react';
+import { Component } from 'react';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import { ImageGalleryStyle } from './ImageGallery.styled';
 
-const ImageGallery = ({ images, children }) => {
-  return (
-    <div>
+class ImageGallery extends Component {
+  handleImageClick = (largeImageURL) => {
+    console.log('Large image clicked: ', largeImageURL);
+  };
+  render() {
+    return (
       <ImageGalleryStyle>
-        {images.map(img => (
-          <ImageGalleryItem key={img.id} item={img} />
+        {this.props.images.map((image) => (
+          <ImageGalleryItem
+            key={image.id}
+            item={image}
+            onImageClick={this.handleImageClick}
+          />
         ))}
       </ImageGalleryStyle>
-      {children}
-    </div>
-  );
-};
+    );
+  }
+}
+export default ImageGallery
 
-export default ImageGallery;
 
 // const API_KEY = '34168491-a08a19ec58377d1b70d25ff83';
 // const PER_PAGE = 12;
