@@ -21,13 +21,15 @@ class App extends Component {
     page: 1,
     showModal: false,
     imgModal: '',
+    showLoadMore: false,
   };
 
   onFormSubmit = input => {
     if (input.trim() === '') {
-      toast.error('Type something!');
+      return toast.error('Type something!');
+    } else if (input === this.state.input) {
       return;
-    }
+        }
     this.setState({
       query: input.toLowerCase(),
       page: 1,
@@ -46,6 +48,7 @@ class App extends Component {
           this.setState({
             images: response.data.hits,
             status: 'resolved',
+            showLoadMore: response.data.hits.length === PER_PAGE
           });
         })
         .catch(error => {
@@ -62,6 +65,7 @@ class App extends Component {
           this.setState(prevState => ({
             images: [...prevState.images, ...response.data.hits],
             status: 'resolved',
+            showLoadMore: response.data.hits.length === PER_PAGE
           }));
         })
         .catch(error => {
@@ -86,7 +90,7 @@ class App extends Component {
   };
 
   render() {
-    const { images, error, status, showModal, imgModal } = this.state;
+    const { images, error, status, showModal, imgModal, showLoadMore } = this.state;
 
     return (
       <AppContainer>
@@ -97,12 +101,10 @@ class App extends Component {
         {status === 'resolved' && images.length > 0 && (
           <div>
             <ImageGallery images={images} onShowModal={this.onShowModal} />
-            {images.length > PER_PAGE ? (
-          <Button onClick={this.handleLoadMore} />
-        ) : (
-          <Button onClick={this.handleLoadMore} disabled style={{ visibility: 'hidden' }} />
-        )}
-        <ToastContainer />
+            {showLoadMore ? (
+              <Button onClick={this.handleLoadMore} />
+            ) : null}
+            <ToastContainer />
             {showModal && <Modal onClose={this.toggleModal} item={imgModal} />}
           </div>
         )}
