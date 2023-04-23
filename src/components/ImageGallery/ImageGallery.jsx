@@ -1,31 +1,27 @@
-import { Component } from 'react';
+import PropTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import { ImageGalleryStyle } from './ImageGallery.styled';
 
-class ImageGallery extends Component {
-  state = {
-    largeImageURL: '',
-  };
-
-  handleImageClick = (largeImageURL) => {
-    this.setState({largeImageURL: {largeImageURL}})
-    console.log('Large image clicked: ', largeImageURL);
-  };
-  render() {
-    return (
+const ImageGallery = ({ images, onShowModal }) => {
+  return (
       <ImageGalleryStyle>
-        {this.props.images.map((image) => (
+        {images.map((image) => (
           <ImageGalleryItem
             key={image.id}
             item={image}
-            onImageClick={this.props.onImageClick}
+            onShowModal={onShowModal}
           />
         ))}
       </ImageGalleryStyle>
     );
-  }
-}
+  };
+
 export default ImageGallery
+
+ImageGallery.propTypes = {
+  images: PropTypes.array.isRequired,
+  onShowModal: PropTypes.func.isRequired,
+};
 
 
 // const API_KEY = '34168491-a08a19ec58377d1b70d25ff83';

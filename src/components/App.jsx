@@ -19,13 +19,13 @@ class App extends Component {
     status: 'idle',
     query: '',
     page: 1,
-    isModalOpen: false,
-    largeImageURL: '',
+    showModal: false,
+    imgModal: '',
   };
 
   onFormSubmit = input => {
     if (input.trim() === '') {
-      toast.error("Type something!");
+      toast.error('Type something!');
       return;
     }
     this.setState({
@@ -75,23 +75,18 @@ class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  handleImageClick = imageUrl => {
-    this.setState({
-      isModalOpen: true,
-   
-      largeImageURL: imageUrl,
-    });
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
   };
 
-  handleCloseModal = () => {
-    this.setState({
-      isModalOpen: false,
-      largeImageURL: '',
-    });
+  onShowModal = item => {
+    this.setState({ imgModal: item, showModal: this.toggleModal });
   };
-
+  
   render() {
-    const { images, error, status, isModalOpen, largeImageURL } = this.state;
+    const { images, error, status, showModal, imgModal } = this.state;
 
     return (
       <AppContainer>
@@ -99,19 +94,16 @@ class App extends Component {
         {status === 'idle' && <IdleMessage>Enter a search query</IdleMessage>}
         {status === 'pending' && <Loader loading={true} />}
         {status === 'rejected' && <h2>{error.message}</h2>}
-        {status === 'resolved'  && images.length > 0 && (
+        {status === 'resolved' && images.length > 0 && (
           <div>
             <ImageGallery
               images={images}
-              onImageClick={this.handleImageClick}
+              onShowModal={this.onShowModal}
             />
             <Button onClick={this.handleLoadMore} />
-            <ToastContainer/>
-            {isModalOpen && (
-              <Modal
-                imageUrl={largeImageURL}
-                onCloseModal={this.handleCloseModal}
-              />
+            <ToastContainer />
+            {showModal && (
+              <Modal onClose={this.toggleModal} item={imgModal} />
             )}
           </div>
         )}
@@ -165,3 +157,18 @@ export default App;
 //   }
 
 // export default App;
+
+// handleImageClick = imageUrl => {
+  //   this.setState({
+  //     isModalOpen: true,
+
+  //     largeImageURL: imageUrl,
+  //   });
+  // };
+
+  // handleCloseModal = () => {
+  //   this.setState({
+  //     isModalOpen: false,
+  //     largeImageURL: '',
+  //   });
+  // };
