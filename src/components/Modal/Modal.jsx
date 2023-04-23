@@ -6,15 +6,14 @@ import { Overlay, ModalImg } from './Modal.styled';
 const modalRoot = document.querySelector('#modal-root');
 
 class Modal extends Component {
-
   componentDidMount() {
-        window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
-        window.removeEventListener('keydown', this.handleKeyDown);
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
-  
+
   handleKeyDown = e => {
     if (e.code === 'Escape') {
       this.props.onClose();
@@ -48,9 +47,6 @@ Modal.propTypes = {
   item: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
 };
-
-
-
 
 // import { createPortal } from 'react-dom';
 // import PropTypes from 'prop-types';

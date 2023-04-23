@@ -84,7 +84,7 @@ class App extends Component {
   onShowModal = item => {
     this.setState({ imgModal: item, showModal: this.toggleModal });
   };
-  
+
   render() {
     const { images, error, status, showModal, imgModal } = this.state;
 
@@ -96,15 +96,14 @@ class App extends Component {
         {status === 'rejected' && <h2>{error.message}</h2>}
         {status === 'resolved' && images.length > 0 && (
           <div>
-            <ImageGallery
-              images={images}
-              onShowModal={this.onShowModal}
-            />
-            <Button onClick={this.handleLoadMore} />
-            <ToastContainer />
-            {showModal && (
-              <Modal onClose={this.toggleModal} item={imgModal} />
-            )}
+            <ImageGallery images={images} onShowModal={this.onShowModal} />
+            {images.length > PER_PAGE ? (
+          <Button onClick={this.handleLoadMore} />
+        ) : (
+          <Button onClick={this.handleLoadMore} disabled style={{ visibility: 'hidden' }} />
+        )}
+        <ToastContainer />
+            {showModal && <Modal onClose={this.toggleModal} item={imgModal} />}
           </div>
         )}
       </AppContainer>
@@ -159,16 +158,16 @@ export default App;
 // export default App;
 
 // handleImageClick = imageUrl => {
-  //   this.setState({
-  //     isModalOpen: true,
+//   this.setState({
+//     isModalOpen: true,
 
-  //     largeImageURL: imageUrl,
-  //   });
-  // };
+//     largeImageURL: imageUrl,
+//   });
+// };
 
-  // handleCloseModal = () => {
-  //   this.setState({
-  //     isModalOpen: false,
-  //     largeImageURL: '',
-  //   });
-  // };
+// handleCloseModal = () => {
+//   this.setState({
+//     isModalOpen: false,
+//     largeImageURL: '',
+//   });
+// };
