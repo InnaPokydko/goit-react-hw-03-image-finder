@@ -18,7 +18,7 @@ class ImageGallery extends Component {
           <ImageGalleryItem
             key={image.id}
             item={image}
-            onImageClick={this.handleImageClick}
+            onImageClick={this.props.onImageClick}
           />
         ))}
       </ImageGalleryStyle>

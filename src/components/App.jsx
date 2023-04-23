@@ -78,6 +78,7 @@ class App extends Component {
   handleImageClick = imageUrl => {
     this.setState({
       isModalOpen: true,
+   
       largeImageURL: imageUrl,
     });
   };
