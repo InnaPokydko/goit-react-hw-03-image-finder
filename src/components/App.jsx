@@ -88,7 +88,7 @@ class App extends Component {
         {status === 'idle' && <IdleMessage>Enter a search query</IdleMessage>}
         {status === 'pending' && <Loader loading={true} />}
         {status === 'rejected' && <h2>{error.message}</h2>}
-        {status === 'resolved' && images.length > 0 && (
+        {images.length > 0 && (
           <div>
             <ImageGallery images={images} onShowModal={this.onShowModal} />
             {showLoadMore ? <Button onClick={this.handleLoadMore} /> : null}
